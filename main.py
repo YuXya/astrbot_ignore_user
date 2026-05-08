@@ -16,8 +16,8 @@ class IgnoreUserPlugin(Star):
         blacklist = self.config.get("blacklist_users", [])
         return str(user_id) in [str(uid) for uid in blacklist]
 
-    @filter.event_message_type(filter.EventMessageType.ALL)
-    @filter.priority(1000) # 极高优先级，确保在所有指令和 AI 逻辑之前触发
+    # 修复：将 priority 作为参数传入 event_message_type
+    @filter.event_message_type(filter.EventMessageType.ALL, priority=1000)
     async def block_handler(self, event: AstrMessageEvent):
         """核心拦截逻辑"""
         user_id = event.message_obj.sender.user_id
